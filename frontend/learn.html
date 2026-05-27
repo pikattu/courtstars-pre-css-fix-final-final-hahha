@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourtStars — Learn Basketball</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="learnNav">
+    <div class="nav-logo">
+      <img src="imgs/courtstarslogo.png" alt="CourtStars" style="height:72px;width:auto;max-width:240px;object-fit:contain;display:block;"
+           onerror="this.style.display='none';document.getElementById('learnLogoFallback').style.display='inline-flex'" />
+      <span id="learnLogoFallback" style="display:none;align-items:center;gap:4px"><div class="nav-ball"></div>COURT<span>STARS</span></span>
+    </div>
+    <a class="nav-back" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Arena
+    </a>
+    <div class="nav-badge">Learning Hub</div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-arc"></div>
+    <div class="hero-eyebrow">Beginner's Guide</div>
+    <h1 class="hero-title">Learn the<br><em>Game.</em></h1>
+    <p class="hero-sub">Everything you need to go from spectator to student — rules, positions, history, stats, and where to keep learning.</p>
+    <div class="hero-progress">
+      <span class="hero-progress-dot"></span>
+      6 Modules &nbsp;·&nbsp; ~10 min read
+    </div>
+  </header>
+
+  <!-- QUICK JUMP -->
+  <div class="quickjump">
+    <a class="qj-btn" href="#rules-section"><span class="qj-icon">📋</span> The Rules</a>
+    <a class="qj-btn" href="#scoring-section"><span class="qj-icon">🏀</span> Scoring</a>
+    <a class="qj-btn" href="#positions-section"><span class="qj-icon">👤</span> Positions</a>
+    <a class="qj-btn" href="#acronyms-section"><span class="qj-icon">📊</span> Stat Acronyms</a>
+    <a class="qj-btn" href="#violations-section"><span class="qj-icon">🚫</span> Fouls & Violations</a>
+    <a class="qj-btn" href="#glossary-section"><span class="qj-icon">🔍</span> Glossary</a>
+    <a class="qj-btn" href="#tutorials-section"><span class="qj-icon">▶️</span> Watch & Learn</a>
+  </div>
+
+  <!-- ── MODULE 1: RULES ───────────────────────────────────── -->
+  <section class="learn-section" id="rules-section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-meta">
+        <div class="section-label">How the Game Works</div>
+        <h2 class="section-title">The Core Rules</h2>
+      </div>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">⏱️</div>
+        <div class="rule-title">Game Structure</div>
+        <p class="rule-body">An NBA game consists of four 12-minute quarters (48 minutes total). If tied after regulation, 5-minute overtime periods are played until a winner is decided. Teams switch which basket they shoot at after halftime.</p>
+        <span class="rule-tag">Structure</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">🧑‍🤝‍🧑</div>
+        <div class="rule-title">Teams & Rosters</div>
+        <p class="rule-body">Each team plays 5 players on the court at a time. NBA rosters hold up to 15 players (13 active per game). There are no set positions in the rules — teams choose their own lineup strategy.</p>
+        <span class="rule-tag">Roster</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">⏰</div>
+        <div class="rule-title">Shot Clock</div>
+        <p class="rule-body">The offensive team must attempt a shot that hits the rim within 24 seconds of gaining possession. If they fail, it's a "shot clock violation" and the other team gets the ball. This prevents stalling and keeps the pace high.</p>
+        <span class="rule-tag">Timing</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">🏃</div>
+        <div class="rule-title">Dribbling</div>
+        <p class="rule-body">Players must bounce (dribble) the ball while moving. Once a player stops dribbling and holds the ball with both hands, they may no longer dribble again — they must pass or shoot. Resuming a dribble is called "double dribbling" and results in a turnover.</p>
+        <span class="rule-tag">Movement</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">👣</div>
+        <div class="rule-title">Traveling</div>
+        <p class="rule-body">A player cannot move both feet without dribbling. Players are allowed two steps after gathering the ball (the "gather step" rule in the NBA), but taking additional steps without dribbling is called traveling — the ball is given to the other team.</p>
+        <span class="rule-tag">Movement</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">🔄</div>
+        <div class="rule-title">Half-Court & Backcourt</div>
+        <p class="rule-body">Once the offense advances the ball past the half-court line, they cannot return to their own backcourt. Doing so is a backcourt violation, resulting in a turnover. The offense has 8 seconds to cross half-court after gaining possession.</p>
+        <span class="rule-tag">Court Rules</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">🎯</div>
+        <div class="rule-title">Out of Bounds</div>
+        <p class="rule-body">The ball is "out of bounds" if it crosses the sidelines or baseline. The last player to touch it before it goes out loses possession. Players can step out of bounds to catch a pass, but must re-establish themselves inbounds before touching the ball.</p>
+        <span class="rule-tag">Court Rules</span>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-icon">📐</div>
+        <div class="rule-title">The Key (Paint Area)</div>
+        <p class="rule-body">The rectangular area under each basket is called "the paint" or "the key." An offensive player may not stand in the paint for more than 3 seconds at a time (3-second violation). Defensive players are also tracked, though the rules differ slightly.</p>
+        <span class="rule-tag">Court Rules</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── MODULE 3: SCORING ─────────────────────────────────── -->
+  <section class="learn-section" id="scoring-section">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-meta">
+        <div class="section-label">Points on the Board</div>
+        <h2 class="section-title">How Scoring Works</h2>
+      </div>
+    </div>
+
+    <div class="scoring-table">
+      <div class="score-card">
+        <div class="score-pts">1</div>
+        <div class="score-info">
+          <div class="score-label">Free Throw</div>
+          <p class="score-desc">Awarded after certain fouls. The shooter takes uncontested shots from the free throw line (15 ft from the basket).</p>
+        </div>
+      </div>
+
+      <div class="score-card">
+        <div class="score-pts">2</div>
+        <div class="score-info">
+          <div class="score-label">Field Goal</div>
+          <p class="score-desc">Any made basket from inside the three-point arc — layups, mid-range jumpers, dunks, and floaters all count as 2 points.</p>
+        </div>
+      </div>
+
+      <div class="score-card">
+        <div class="score-pts">3</div>
+        <div class="score-info">
+          <div class="score-label">Three-Pointer</div>
+          <p class="score-desc">Any made shot with the shooter's feet behind the three-point arc at the time of release. The arc is 23 ft 9 in from the basket in the NBA.</p>
+        </div>
+      </div>
+
+      <div class="score-card">
+        <div class="score-pts">+1</div>
+        <div class="score-info">
+          <div class="score-label">And-One</div>
+          <p class="score-desc">When a player is fouled while making their shot, the basket counts and they receive one additional free throw attempt — colloquially called an "and-one."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── MODULE 4: POSITIONS ───────────────────────────────── -->
+  <section class="learn-section" id="positions-section">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-meta">
+        <div class="section-label">On the Court</div>
+        <h2 class="section-title">The Five Positions</h2>
+      </div>
+    </div>
+
+    <div class="positions-grid">
+      <div class="pos-card" style="animation-delay:0.05s">
+        <div class="pos-number">1</div>
+        <div class="pos-abbr">PG</div>
+        <div class="pos-name">Point Guard</div>
+        <p class="pos-desc">The floor general. Runs the offense, controls the pace, and distributes the ball. Usually the best passer and ball-handler on the team.</p>
+        <div class="pos-example">e.g. Steph Curry, Luka Doncic</div>
+      </div>
+
+      <div class="pos-card" style="animation-delay:0.10s">
+        <div class="pos-number">2</div>
+        <div class="pos-abbr">SG</div>
+        <div class="pos-name">Shooting Guard</div>
+        <p class="pos-desc">A perimeter scorer and off-ball threat. Often the team's best three-point shooter. Also covers opposing guards on defense.</p>
+        <div class="pos-example">e.g. Klay Thompson, Devin Booker</div>
+      </div>
+
+      <div class="pos-card" style="animation-delay:0.15s">
+        <div class="pos-number">3</div>
+        <div class="pos-abbr">SF</div>
+        <div class="pos-name">Small Forward</div>
+        <p class="pos-desc">A versatile wing who can score, defend multiple positions, and operate at every level of the court. The NBA's most prized position type today.</p>
+        <div class="pos-example">e.g. LeBron James, Jayson Tatum</div>
+      </div>
+
+      <div class="pos-card" style="animation-delay:0.20s">
+        <div class="pos-number">4</div>
+        <div class="pos-abbr">PF</div>
+        <div class="pos-name">Power Forward</div>
+        <p class="pos-desc">A physical presence near the basket who rebounds, scores in the paint, and sets screens. Modern PFs are also expected to shoot threes.</p>
+        <div class="pos-example">e.g. Giannis, Anthony Davis</div>
+      </div>
+
+      <div class="pos-card" style="animation-delay:0.25s">
+        <div class="pos-number">5</div>
+        <div class="pos-abbr">C</div>
+        <div class="pos-name">Center</div>
+        <p class="pos-desc">The tallest player, anchoring the defense near the rim, protecting the basket, and finishing around the basket on offense. Also called the "big man."</p>
+        <div class="pos-example">e.g. Nikola Jokic, Joel Embiid</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── MODULE 5: ACRONYMS ────────────────────────────────── -->
+  <section class="learn-section" id="acronyms-section">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-meta">
+        <div class="section-label">Reading the Box Score</div>
+        <h2 class="section-title">Stat Acronyms Decoded</h2>
+      </div>
+    </div>
+
+    <div class="acronyms-layout">
+      <!-- Basic stats -->
+      <div class="acronym-row" style="animation-delay:0.05s">
+        <div class="acronym-abbr">PPG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Points Per Game</div>
+          <div class="acronym-desc">The average number of points a player scores each game over a season. The primary offensive statistic.</div>
+          <div class="acronym-value">League avg ≈ 25 PPG for All-Stars; 30+ PPG is elite</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.08s">
+        <div class="acronym-abbr">RPG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Rebounds Per Game</div>
+          <div class="acronym-desc">Average number of missed shot recoveries per game. Split into OREB (offensive) and DREB (defensive).</div>
+          <div class="acronym-value">10+ RPG is considered dominant</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.11s">
+        <div class="acronym-abbr">APG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Assists Per Game</div>
+          <div class="acronym-desc">Average passes per game that directly lead to a made basket. Measures playmaking and court vision.</div>
+          <div class="acronym-value">7+ APG marks a true playmaking point guard</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.14s">
+        <div class="acronym-abbr">SPG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Steals Per Game</div>
+          <div class="acronym-desc">Average number of times per game a defensive player legally takes the ball from the offense.</div>
+          <div class="acronym-value">2+ SPG is considered elite at any position</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.17s">
+        <div class="acronym-abbr">BPG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Blocks Per Game</div>
+          <div class="acronym-desc">Average shot rejections per game — when a defender legally deflects a shot attempt by the offense.</div>
+          <div class="acronym-value">3+ BPG defines a premier shot-blocker</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.20s">
+        <div class="acronym-abbr">MPG</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Minutes Per Game</div>
+          <div class="acronym-desc">Average playing time per game. Starters typically log 30–38 minutes; key reserves 15–25 minutes.</div>
+          <div class="acronym-value">36+ MPG indicates a team's cornerstone</div>
+        </div>
+      </div>
+
+      <!-- Shooting percentages -->
+      <div class="acronym-row" style="animation-delay:0.23s">
+        <div class="acronym-abbr">FG%</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Field Goal Percentage</div>
+          <div class="acronym-desc">Ratio of made shots to total attempts from the field (excluding free throws). Shows general shooting efficiency.</div>
+          <div class="acronym-value">50%+ is highly efficient; avg is ~46%</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.26s">
+        <div class="acronym-abbr">3P%</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Three-Point Percentage</div>
+          <div class="acronym-desc">Percentage of three-point attempts made. Critical in today's spacing-dominated NBA.</div>
+          <div class="acronym-value">37%+ is average; 40%+ is excellent on volume</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.29s">
+        <div class="acronym-abbr">FT%</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Free Throw Percentage</div>
+          <div class="acronym-desc">Percentage of uncontested free throws made. A pure shooting skill test — no defenders, no time pressure.</div>
+          <div class="acronym-value">80%+ is very good; 90%+ is elite</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.32s">
+        <div class="acronym-abbr">TS%</div>
+        <div class="acronym-info">
+          <div class="acronym-full">True Shooting Percentage</div>
+          <div class="acronym-desc">An advanced stat combining FG%, 3P%, and FT% to give a holistic view of shooting efficiency per possession.</div>
+          <div class="acronym-value">Formula: Pts ÷ (2 × TSA) where TSA = FGA + 0.44 × FTA</div>
+        </div>
+      </div>
+
+      <!-- Advanced -->
+      <div class="acronym-row" style="animation-delay:0.35s">
+        <div class="acronym-abbr">PER</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Player Efficiency Rating</div>
+          <div class="acronym-desc">Created by John Hollinger. A single number summarizing per-minute statistical accomplishments. The league average is always set to 15.0.</div>
+          <div class="acronym-value">20+ is All-Star level; 25+ is MVP territory</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.38s">
+        <div class="acronym-abbr">+/-</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Plus / Minus</div>
+          <div class="acronym-desc">The score differential when a specific player is on the court. A +10 means the team outscored opponents by 10 points while that player played.</div>
+          <div class="acronym-value">Positive = team performs better with you; negative = worse</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.41s">
+        <div class="acronym-abbr">TOV</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Turnovers</div>
+          <div class="acronym-desc">When the offensive team loses ball possession to the defense — through bad passes, out-of-bounds, violations, or steals.</div>
+          <div class="acronym-value">Under 2.5 per game is the target for most players</div>
+        </div>
+      </div>
+
+      <div class="acronym-row" style="animation-delay:0.44s">
+        <div class="acronym-abbr">DD / TD</div>
+        <div class="acronym-info">
+          <div class="acronym-full">Double-Double / Triple-Double</div>
+          <div class="acronym-desc">Reaching double figures (10+) in two statistical categories in a single game is a "double-double." Doing it in three categories (pts/reb/ast) is a "triple-double."</div>
+          <div class="acronym-value">Triple-doubles signal elite all-around impact</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── MODULE 6: FOULS & VIOLATIONS ─────────────────────── -->
+  <section class="learn-section" id="violations-section">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-meta">
+        <div class="section-label">Infractions & Penalties</div>
+        <h2 class="section-title">Fouls & Violations</h2>
+      </div>
+    </div>
+
+    <div class="violations-grid">
+      <div class="violation-card foul" style="animation-delay:0.05s">
+        <div class="violation-name">Personal Foul <span class="violation-badge">Foul</span></div>
+        <p class="violation-desc">Illegal physical contact with an opponent — pushing, hitting, holding, or illegal screens. Each player is allowed 6 personal fouls before being ejected ("fouled out"). Depending on game situation, the fouled team may get free throws.</p>
+      </div>
+
+      <div class="violation-card foul" style="animation-delay:0.08s">
+        <div class="violation-name">Flagrant Foul <span class="violation-badge">Foul</span></div>
+        <p class="violation-desc">Excessive or unnecessary contact. A Flagrant 1 results in two free throws and possession; a Flagrant 2 results in automatic ejection of the offending player. Reviewed by officials on instant replay.</p>
+      </div>
+
+      <div class="violation-card technical" style="animation-delay:0.11s">
+        <div class="violation-name">Technical Foul <span class="violation-badge">Technical</span></div>
+        <p class="violation-desc">Unsportsmanlike conduct — arguing with officials, excessive celebration, leaving the bench, or delay of game. Results in one free throw for the opposing team. Two technicals in a game = automatic ejection.</p>
+      </div>
+
+      <div class="violation-card" style="animation-delay:0.14s">
+        <div class="violation-name">Traveling <span class="violation-badge">Violation</span></div>
+        <p class="violation-desc">Moving both feet without dribbling. In the NBA, players receive a "gather step" before their two legal steps, but taking extra steps results in a turnover. One of the most called violations at every level.</p>
+      </div>
+
+      <div class="violation-card" style="animation-delay:0.17s">
+        <div class="violation-name">Double Dribble <span class="violation-badge">Violation</span></div>
+        <p class="violation-desc">Dribbling with both hands simultaneously, or stopping a dribble and then dribbling again. Both result in an immediate turnover — the other team inbounds the ball from the sideline.</p>
+      </div>
+
+      <div class="violation-card" style="animation-delay:0.20s">
+        <div class="violation-name">Goaltending <span class="violation-badge">Violation</span></div>
+        <p class="violation-desc">Interfering with a shot while the ball is on its downward arc toward the basket, or touching the ball while it is on or directly above the rim. The basket is automatically counted if done by the defense; the shot is waved off if done by the offense.</p>
+      </div>
+
+      <div class="violation-card" style="animation-delay:0.23s">
+        <div class="violation-name">Shot Clock Violation <span class="violation-badge">Violation</span></div>
+        <p class="violation-desc">Failing to attempt a shot that hits the rim within 24 seconds of gaining possession. The clock resets on any shot that hits the rim. After a violation, the other team inbounds from the sideline near where the violation occurred.</p>
+      </div>
+
+      <div class="violation-card" style="animation-delay:0.26s">
+        <div class="violation-name">3-Second Violation <span class="violation-badge">Violation</span></div>
+        <p class="violation-desc">An offensive player standing in the paint (free throw lane) for more than 3 consecutive seconds. To reset the count, they must fully exit the paint. Prevents teams from parking a big man under the basket indefinitely.</p>
+      </div>
+
+      <div class="violation-card foul" style="animation-delay:0.29s">
+        <div class="violation-name">Charge vs. Block <span class="violation-badge">Foul</span></div>
+        <p class="violation-desc">One of basketball's most contested calls. A "charge" is called when an offensive player runs into a stationary defender (offensive foul). A "block" is called when a defender is still moving. The defender must have their feet set before contact to draw a charge.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── GLOSSARY ───────────────────────────────────────────── -->
+  <section class="learn-section" id="glossary-section">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-meta">
+        <div class="section-label">Quick Reference</div>
+        <h2 class="section-title">Basketball Glossary</h2>
+      </div>
+    </div>
+
+    <div class="glossary-search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="glossarySearch" placeholder="Search terms…" oninput="filterGlossary(this.value)" />
+    </div>
+
+    <div class="glossary-list" id="glossaryList">
+      <!-- Items injected by JS -->
+    </div>
+  </section>
+
+  <div class="court-divider"></div>
+
+  <!-- ── TUTORIALS ─────────────────────────────────────────── -->
+  <section class="learn-section" id="tutorials-section">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-meta">
+        <div class="section-label">Keep Learning</div>
+        <h2 class="section-title">Watch & Learn</h2>
+      </div>
+    </div>
+
+    <div class="tutorials-grid">
+      <a class="tutorial-card" href="https://www.youtube.com/watch?v=XbtmGKif7Ck" target="_blank" rel="noopener" style="animation-delay:0.05s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">📏</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">YouTube · NBA</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Fundamentals</div>
+          <div class="tutorial-title">NBA Rules Explained for Beginners</div>
+          <p class="tutorial-desc">The official NBA channel breaks down the game's fundamental rules with real in-game examples, making it easy to follow along.</p>
+          <div class="tutorial-link">Watch on YouTube <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+
+      <a class="tutorial-card" href="https://www.youtube.com/watch?v=YJuMFEEJDVU" target="_blank" rel="noopener" style="animation-delay:0.10s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">📊</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">YouTube · FiveThirtyEight</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Analytics</div>
+          <div class="tutorial-title">How Basketball Stats Actually Work</div>
+          <p class="tutorial-desc">A clear explainer on advanced basketball stats — from basic box scores to modern metrics like PER, VORP, and Win Shares.</p>
+          <div class="tutorial-link">Watch on YouTube <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+
+      <a class="tutorial-card" href="https://www.nba.com/learn" target="_blank" rel="noopener" style="animation-delay:0.15s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">🏀</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">nba.com · Official</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Official Resource</div>
+          <div class="tutorial-title">NBA's Official Learning Hub</div>
+          <p class="tutorial-desc">The NBA's own beginner resource, covering rules, positions, and how the league is structured — straight from the source.</p>
+          <div class="tutorial-link">Visit NBA.com <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+
+      <a class="tutorial-card" href="https://www.basketball-reference.com" target="_blank" rel="noopener" style="animation-delay:0.20s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">📖</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">basketball-reference.com</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Stats Deep Dive</div>
+          <div class="tutorial-title">Basketball Reference — The Stats Bible</div>
+          <p class="tutorial-desc">The definitive database for every NBA stat ever recorded. Every player, every season, every game going back to 1946. Free and comprehensive.</p>
+          <div class="tutorial-link">Explore Stats <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+
+      <a class="tutorial-card" href="https://www.youtube.com/c/CleantheMirror" target="_blank" rel="noopener" style="animation-delay:0.25s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">🎬</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">YouTube · Clean the Glass</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Tactics & Strategy</div>
+          <div class="tutorial-title">Basketball Tactics for Beginners</div>
+          <p class="tutorial-desc">Excellent breakdown videos on offensive systems, defensive schemes, and why teams make the decisions they do — explained in plain language.</p>
+          <div class="tutorial-link">Watch on YouTube <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+
+      <a class="tutorial-card" href="https://www.reddit.com/r/nba/wiki/index" target="_blank" rel="noopener" style="animation-delay:0.30s">
+        <div class="tutorial-thumb">
+          <div class="tutorial-thumb-inner">
+            <div class="tutorial-bg-icon">💬</div>
+            <div class="tutorial-play">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--orange2)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="tutorial-platform">Reddit · r/nba</div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <div class="tutorial-cat">Community</div>
+          <div class="tutorial-title">r/NBA Beginner's Guide & Wiki</div>
+          <p class="tutorial-desc">The NBA subreddit community has a comprehensive wiki covering everything from rules to team histories. Great for asking questions and joining discussions.</p>
+          <div class="tutorial-link">Visit the Wiki <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="learn-footer">
+    <p class="footer-text">
+      CourtStars Learning Hub &nbsp;·&nbsp; <a href="index.html">← Back to the Arena</a>
+    </p>
+  </footer>
+
+  <script>
+    /* ── GLOSSARY DATA ─────────────────────────────────────── */
+    const glossaryTerms = [
+      { term: 'Alley-oop', def: 'A play where one player lobs the ball near the basket and a teammate catches it in mid-air and dunks or finishes before landing.' },
+      { term: 'Assist', def: 'A pass that directly leads to a made basket by a teammate. The passer is credited with an assist.' },
+      { term: 'Box Score', def: 'The statistical summary of a game, listing each player\'s points, rebounds, assists, steals, blocks, and shooting percentages.' },
+      { term: 'Buzzer Beater', def: 'A shot that is released before the game or quarter clock expires and goes in — often the most dramatic moments in basketball.' },
+      { term: 'Dunk', def: 'Forcefully pushing the ball through the basket from above the rim. Worth 2 points and often one of the most exciting plays in the game.' },
+      { term: 'Fast Break', def: 'When the offense outnumbers the defense and pushes the ball up the court quickly before the defense can set up — often resulting in easy baskets.' },
+      { term: 'Free Agent', def: 'A player not currently under contract with a team. During free agency periods, players can negotiate and sign with any team.' },
+      { term: 'Hack-a-Shaq', def: 'A deliberate fouling strategy where a team repeatedly fouls a poor free-throw shooter to exploit their weakness at the free throw line.' },
+      { term: 'ISO (Isolation)', def: 'An offensive play where the ball handler is isolated one-on-one against a defender with teammates clearing out of the way.' },
+      { term: 'Layup', def: 'A shot taken close to the basket using one hand, typically off the backboard. The most fundamental finishing move in basketball.' },
+      { term: 'Lottery Pick', def: 'A draft pick from the first 14 selections, determined by a weighted lottery among the 14 teams that did not make the playoffs.' },
+      { term: 'Mid-Range', def: 'Shots taken from inside the three-point line but away from the basket — typically 10–22 feet. Once common, now considered inefficient by analytics.' },
+      { term: 'Pick-and-Roll', def: 'The most common play in basketball. A teammate (the picker) sets a screen for the ball handler, then "rolls" toward the basket. The defense must choose who to cover.' },
+      { term: 'Posterize', def: 'When an offensive player dunks over a defender in spectacular fashion — as if the defender has been turned into a still image, i.e., a "poster."' },
+      { term: 'Rebound', def: 'Retrieving the ball after a missed shot. An offensive rebound (OREB) gives the team another possession; a defensive rebound (DREB) ends the opponent\'s possession.' },
+      { term: 'Screen', def: 'Also called a "pick." When an offensive player legally stands in the path of a defender to free up a teammate. Screens are the backbone of most offensive plays.' },
+      { term: 'Slam Dunk', def: 'See "Dunk." The "slam" refers to the power with which the player throws the ball through the hoop.' },
+      { term: 'Sixth Man', def: 'The best player who typically comes off the bench (the first substitute off the bench). The NBA has an annual Sixth Man of the Year Award.' },
+      { term: 'Small Ball', def: 'A lineup strategy where teams replace traditional centers with smaller, faster players to emphasize speed, three-point shooting, and court spacing.' },
+      { term: 'Trade Deadline', def: 'The annual cutoff (usually in February) after which teams can no longer trade players for the rest of the regular season. A high-drama day across the league.' },
+      { term: 'Turnover', def: 'When the offensive team loses ball possession to the defense — through bad passes, stepping out of bounds, violations, or steals.' },
+      { term: 'Zone Defense', def: 'A defensive scheme where players guard areas of the court rather than specific opponents. Common alternatives include "man-to-man" defense.' },
+    ];
+
+    function renderGlossary(items) {
+      const list = document.getElementById('glossaryList');
+      list.innerHTML = items.map((item, i) => `
+        <div class="glossary-item" style="animation-delay:${i * 0.02}s">
+          <div class="glossary-q" onclick="toggleGlossary(this)">
+            <span class="glossary-term">${item.term}</span>
+            <svg class="glossary-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="glossary-a">${item.def}</div>
+        </div>
+      `).join('');
+    }
+
+    function toggleGlossary(el) {
+      el.closest('.glossary-item').classList.toggle('open');
+    }
+
+    function filterGlossary(query) {
+      const q = query.toLowerCase();
+      const filtered = glossaryTerms.filter(item =>
+        item.term.toLowerCase().includes(q) || item.def.toLowerCase().includes(q)
+      );
+      renderGlossary(filtered);
+    }
+
+    renderGlossary(glossaryTerms);
+
+    /* ── NAV SCROLL STATE ──────────────────────────────────── */
+    (function() {
+      const nav = document.getElementById('learnNav');
+      if (!nav) return;
+      window.addEventListener('scroll', () => {
+        nav.style.borderBottomColor = window.scrollY > 20
+          ? 'rgba(255,255,255,0.08)'
+          : 'rgba(255,255,255,0.05)';
+      }, { passive: true });
+    })();
+
+    /* ── SCROLL REVEAL ─────────────────────────────────────── */
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.style.animationPlayState = 'running';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.rule-card, .pos-card, .score-card, .acronym-row, .violation-card, .tutorial-card, .timeline-item').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        obs.observe(el);
+      });
+    }
+  </script>
+</body>
+</html>

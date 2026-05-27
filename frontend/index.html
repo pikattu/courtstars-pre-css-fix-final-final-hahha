@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourtStars — Premium NBA Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-orb">
+        <div class="loader-ball">
+          <div class="loader-seam"></div>
+          <div class="loader-seam2"></div>
+        </div>
+      </div>
+      <div class="loader-brand">
+        <img src="imgs/courtstarslogo.png" alt="CourtStars"
+             id="loaderLogoImg"
+             style="height:108px;width:auto;max-width:280px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(160,110,30,0.28));"
+             onerror="this.style.display='none';document.getElementById('loaderLogoFallback').style.display='flex'" />
+        <span id="loaderLogoFallback" style="display:none;">COURT<span style="color:var(--orange)">STARS</span></span>
+      </div>
+      <div class="loader-sub">LOADING THE ARENA</div>
+      <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
+    </div>
+  </div>
+
+  <!-- GLOBAL SEARCH OVERLAY -->
+  <div class="search-overlay" id="searchOverlay" onclick="closeGlobalSearch(event)">
+    <div class="search-modal">
+      <div class="search-modal-head">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="globalSearchInput" placeholder="Search players, teams, stats…" autocomplete="off" oninput="runGlobalSearch(this.value)" />
+        <button onclick="closeGlobalSearchDirect()">ESC</button>
+      </div>
+      <div class="search-results" id="globalSearchResults">
+        <div class="search-hint">Start typing to search across players and teams</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE BAR (above navbar) -->
+  <div id="scheduleBarWrap">
+    <div id="scheduleBar" class="schedule-bar">
+      <button class="sb-arrow" onclick="scheduleBarPrev()" aria-label="Previous">&#8249;</button>
+      <div class="sb-games" id="sbGames">
+        <div class="sb-game"><span class="sb-status">Loading schedule…</span></div>
+      </div>
+      <button class="sb-arrow" onclick="scheduleBarNext()" aria-label="Next">&#8250;</button>
+    </div>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-logo" onclick="scrollToSection('home')">
+      <!-- LOGO PLACEHOLDER: Replace the img src below with your logo URL.
+           You can also use: <div class="nav-ball"></div><span>Court<em>Stars</em></span>
+           for the text logo. Delete whichever you don't want. -->
+      <img id="navLogoImg" src="imgs/courtstarslogo.png" alt="CourtStars Logo"
+           onerror="this.style.display='none'" />
+
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home"         onclick="scrollToSection('home')">Home</a></li>
+      <li><a href="#news"         onclick="scrollToSection('news')">News</a></li>
+      <li><a href="#players"      onclick="scrollToSection('players')">Players</a></li>
+      <li><a href="#teams"        onclick="scrollToSection('teams')">Teams</a></li>
+      <li><a href="#leaderboards" onclick="scrollToSection('leaderboards')">Stats & Rankings</a></li>
+      <li><a href="#history"      onclick="scrollToSection('history')">History</a></li>
+      <li><a href="#courtmoments" onclick="scrollToSection('courtmoments')">Court Moments</a></li>
+      <li><a href="learn.html">Learn</a></li>
+    </ul>
+
+    
+ <div class="nav-actions">
+      <button class="nav-search-btn" id="navSearchBtn" onclick="openGlobalSearch()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span>Search</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <div class="nav-user-area" id="navUserArea">
+        <!-- Filled by JS: shows Login btn or user avatar -->
+        <a href="login.html" class="nav-login-btn" id="navLoginBtn">Sign In</a>
+      </div>
+      <button class="nav-ham" id="navHam" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home"         onclick="scrollToSection('home');toggleMobileMenu()">Home</a>
+    <a href="#news"         onclick="scrollToSection('news');toggleMobileMenu()">News</a>
+    <a href="#players"      onclick="scrollToSection('players');toggleMobileMenu()">Players</a>
+    <a href="#teams"        onclick="scrollToSection('teams');toggleMobileMenu()">Teams</a>
+    <a href="#leaderboards" onclick="scrollToSection('leaderboards');toggleMobileMenu()">Stats & Rankings</a>
+    <a href="#history"      onclick="scrollToSection('history');toggleMobileMenu()">History</a>
+    <a href="#courtmoments" onclick="scrollToSection('courtmoments');toggleMobileMenu()">Court Moments</a>
+  </div>
+
+  <!-- FLOATING SIDE WIDGETS (Bottom Right Fixed) -->
+  <div class="side-widgets" id="sideWidgets">
+    <button class="sw-toggle" id="swToggle" onclick="toggleSideWidgets()" title="Toggle widgets">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <!-- Next game countdown — scoreboard style -->
+    <div class="hero-countdown scoreboard-style" id="heroCountdown">
+      <div class="scoreboard-header">
+        <span class="sb-led-dot"></span>
+        <span class="hcd-label">NEXT GAME</span>
+        <span class="sb-led-dot"></span>
+      </div>
+      <div class="scoreboard-matchup" id="hcdMatchup">
+        <div class="sb-team-block">
+          <span class="sb-team-abbr">—</span>
+          <span class="sb-team-city">AWAY</span>
+        </div>
+        <div class="sb-center-sep">
+          <span class="sb-at">@</span>
+        </div>
+        <div class="sb-team-block">
+          <span class="sb-team-abbr">—</span>
+          <span class="sb-team-city">HOME</span>
+        </div>
+      </div>
+      <div class="scoreboard-clock">
+        <div class="sc-digit-group">
+          <div class="sc-digit" id="hcdH">00</div>
+          <div class="sc-digit-label">HRS</div>
+        </div>
+        <div class="sc-colon">:</div>
+        <div class="sc-digit-group">
+          <div class="sc-digit" id="hcdM">00</div>
+          <div class="sc-digit-label">MIN</div>
+        </div>
+        <div class="sc-colon">:</div>
+        <div class="sc-digit-group">
+          <div class="sc-digit" id="hcdS">00</div>
+          <div class="sc-digit-label">SEC</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top scorer spotlight -->
+    <div class="hero-spotlight-card" id="heroSpotlight">
+      <div class="hsc-eyebrow">⭐ TOP SCORER THIS SEASON</div>
+      <div class="hsc-player" id="hscPlayer">
+        <div class="hsc-avatar" id="hscAvatar"></div>
+        <div class="hsc-info">
+          <div class="hsc-name" id="hscName">Loading…</div>
+          <div class="hsc-team" id="hscTeam">—</div>
+        </div>
+      </div>
+      <div class="hsc-stats" id="hscStats"></div>
+    </div>
+  </div>
+  
+  <main id="mainContent">
+
+    <!-- ══════════════════════════════════════════
+         HERO SECTION
+    ══════════════════════════════════════════ -->
+    <section id="home" class="hero-section">
+      
+      <!-- HERO BACKGROUND PLACEHOLDER:
+           Replace this div's style with your background image or video.
+           Example: style="background-image: url('YOUR_BG_URL_HERE'); background-size: cover; background-position: center;"
+           Or replace the entire .hero-bg-placeholder div with a <video> tag.
+      -->
+      <div class="hero-bg-placeholder" id="heroBg"
+           style="background-image: url('imgs/bballcourt.png'); background-size: cover; background-position: center;">
+        <!-- Court texture overlay lines -->
+        <div class="hero-bg-dim"></div>
+      </div>
+      
+      <div class="hero-inner">
+        <div class="hero-eyebrow">
+          <span class="live-pulse"></span>
+          <span>Live Season · 2024–25</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-title-line">Legends Are</span>
+          <span class="hero-title-line accent">Made Here.</span>
+        </h1>
+
+        <p class="hero-sub">Every bucket, every record, every dynasty — tracked, analyzed, and celebrated. This is where the game lives.</p>
+
+        <div class="hero-cta-row">
+          <button class="hero-btn-primary" onclick="scrollToSection('players')">
+            Explore Players
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button class="hero-btn-secondary" onclick="scrollToSection('news')">
+            Latest News
+          </button>
+        </div>
+        
+        <!-- Summary strip inside hero -->
+        <div class="hero-stats-strip">
+          <div class="hss-item">
+            <div class="hss-val" id="sum-players">—</div>
+            <div class="hss-lbl">Active Players</div>
+          </div>
+          <div class="hss-divider"></div>
+          <div class="hss-item">
+            <div class="hss-val" id="sum-teams">—</div>
+            <div class="hss-lbl">Teams</div>
+          </div>
+          <div class="hss-divider"></div>
+          <div class="hss-item">
+            <div class="hss-val" id="sum-seasons">—</div>
+            <div class="hss-lbl">Seasons Tracked</div>
+          </div>
+          <div class="hss-divider"></div>
+          <div class="hss-item">
+            <div class="hss-val" id="sum-championships">—</div>
+            <div class="hss-lbl">Championships</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="hero-scroll-hint">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         HERO-TO-NEWS FADE TRANSITION (video clip)
+    ══════════════════════════════════════════ -->
+    <div class="hero-news-fade-wrap" id="heroVideoWrap">
+      <!-- Replace the src below with your actual video clip URL -->
+      <!-- <video class="hero-fade-video" autoplay muted loop playsinline src="YOUR_VIDEO_URL_HERE"></video> -->
+      <div class="hero-fade-overlay top"></div>
+      <div class="hero-fade-overlay bottom"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         NEWS SECTION
+    ══════════════════════════════════════════ -->
+    <section id="news" class="section">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">BREAKING</div>
+          <h2 class="section-title">NBA <span>News & Analysis</span></h2>
+          <p class="section-sub">Real-time headlines from around the league</p>
+        </div>
+        <div class="news-grid" id="newsGrid">
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+          <div class="news-skeleton"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PLAYER SPOTLIGHT SECTION (after news)
+    ══════════════════════════════════════════ -->
+    <section class="section section-spotlight" id="spotlightSection">
+      <div class="spotlight-section-inner">
+        <!-- Left side: context text over BG -->
+        <div class="spotlight-left" id="spotlightLeft">
+          <div class="spotlight-bg-image" id="spotlightBgImage">
+            <img src="imgs/luke.jpeg" class="active" alt="">
+            <img src="imgs/dante.avif" alt="">
+            <img src="imgs/kyrie.avif" alt="">
+          </div>
+          <div class="spotlight-left-overlay"></div>
+          <div class="spotlight-left-content">
+            <div class="section-eyebrow" style="color:var(--gold)">TRENDING NOW</div>
+            <h2 class="spotlight-section-title">Player <span>Spotlight</span></h2>
+            <div class="spotlight-achievement" id="spotlightAchievement">
+              <p>Hover over a player card to see what earned them their spotlight position this season.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side: player cards stacked vertically -->
+        <div class="spotlight-right">
+          <div class="spotlight-cards-wrap" id="spotlightGrid">
+            <div class="spotlight-skeleton"></div>
+            <div class="spotlight-skeleton"></div>
+            <div class="spotlight-skeleton"></div>
+          </div>
+          <!-- Nav dots -->
+          <div class="spotlight-dots" id="spotlightDots"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PLAYERS SECTION
+    ══════════════════════════════════════════ -->
+    <div class="section-sep"></div>
+    <section id="players" class="section">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">ROSTER DATABASE</div>
+          <h2 class="section-title">All <span>Players</span></h2>
+          <p class="section-sub">Sort, filter, and deep-dive on every player in the league</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="Search players, teams…" autocomplete="off" />
+            <button class="search-clear-btn" id="searchClear" onclick="clearSearch()">✕</button>
+          </div>
+          <select class="filter-select" id="teamFilter">
+            <option value="">All Teams</option>
+          </select>
+          <select class="filter-select" id="positionFilter">
+            <option value="">All Positions</option>
+            <option value="PG">Point Guard</option>
+            <option value="SG">Shooting Guard</option>
+            <option value="SF">Small Forward</option>
+            <option value="PF">Power Forward</option>
+            <option value="C">Center</option>
+          </select>
+          <select class="filter-select" id="sortSelect">
+            <option value="ppg-desc">PPG ↓</option>
+            <option value="ppg-asc">PPG ↑</option>
+            <option value="rpg-desc">RPG ↓</option>
+            <option value="apg-desc">APG ↓</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="gamesPlayed-desc">GP ↓</option>
+          </select>
+          <div class="view-toggle">
+            <button class="vt-btn active" id="tableViewBtn" onclick="setView('table',this)" title="List View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <button class="vt-btn" id="gridViewBtn" onclick="setView('grid',this)" title="Grid View">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+            </button>
+          </div>
+          <button class="btn-reset" onclick="resetFilters()">Reset</button>
+        </div>
+
+        <!-- Position Tabs -->
+        <div class="pos-tabs">
+          <button class="pos-tab active" onclick="setPos('ALL',this)">All</button>
+          <button class="pos-tab" onclick="setPos('PG',this)">PG <span>Point Guard</span></button>
+          <button class="pos-tab" onclick="setPos('SG',this)">SG <span>Shooting Guard</span></button>
+          <button class="pos-tab" onclick="setPos('SF',this)">SF <span>Small Forward</span></button>
+          <button class="pos-tab" onclick="setPos('PF',this)">PF <span>Power Forward</span></button>
+          <button class="pos-tab" onclick="setPos('C',this)">C <span>Center</span></button>
+        </div>
+
+        <div class="filter-meta-bar">
+          <span id="playerCount" class="count-badge">Loading…</span>
+          <div id="favBadge" class="fav-badge" onclick="toggleFavoritesFilter()">
+            ★ Favorites <span id="favCount">0</span>
+          </div>
+        </div>
+
+        <!-- Players Container -->
+        <div id="playersContainer"></div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TEAMS SECTION
+    ══════════════════════════════════════════ -->
+    <div class="section-sep"></div>
+    <section id="teams" class="section section-dark">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">FRANCHISES</div>
+          <h2 class="section-title">All <span>Teams</span></h2>
+          <p class="section-sub">Every franchise — rosters, history, legends, and rivalry</p>
+        </div>
+
+        <div class="conf-tabs">
+          <button class="conf-tab active" onclick="setConference('ALL',this)">All Conferences</button>
+          <button class="conf-tab" onclick="setConference('Eastern',this)">🏆 Eastern</button>
+          <button class="conf-tab" onclick="setConference('Western',this)">🏆 Western</button>
+        </div>
+
+        <div class="teams-grid" id="teamsGrid">
+          <div class="team-skeleton"></div>
+          <div class="team-skeleton"></div>
+          <div class="team-skeleton"></div>
+          <div class="team-skeleton"></div>
+          <div class="team-skeleton"></div>
+          <div class="team-skeleton"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         COMBINED STATS + LEADERBOARDS SECTION
+    ══════════════════════════════════════════ -->
+    <section id="leaderboards" class="section stats-lb-combined">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">ANALYTICS HUB · SEASON RANKINGS</div>
+          <h2 class="section-title">Stats & <span>Leaderboards</span></h2>
+          <p class="section-sub">Real-time data and rankings from the CourtStars database</p>
+        </div>
+
+        <!-- Two-column layout: leaderboard left, stats right -->
+        <div class="stats-lb-grid">
+
+          <!-- LEFT: Leaderboard -->
+          <div class="stats-lb-left">
+            <div class="lb-tabs">
+              <button class="lb-tab active"  onclick="setLbTab(this,'points')">
+                <span>🏅</span>Scoring
+              </button>
+              <button class="lb-tab" onclick="setLbTab(this,'rebounds')">
+                <span>💪</span>Reb
+              </button>
+              <button class="lb-tab" onclick="setLbTab(this,'assists')">
+                <span>🤝</span>Ast
+              </button>
+              <button class="lb-tab" onclick="setLbTab(this,'steals')">
+                <span>⚡</span>Stl
+              </button>
+              <button class="lb-tab" onclick="setLbTab(this,'blocks')">
+                <span>🛡</span>Blk
+              </button>
+            </div>
+
+            <div class="lb-container" id="lbContainer">
+              <div class="lb-skeleton"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Stats -->
+          <div class="stats-lb-right" id="stats">
+            <!-- Stat Overview Cards -->
+            <div class="stat-cards-row" id="statCards">
+              <div class="stat-overview-card">
+                <div class="soc-icon">🏅</div>
+                <div class="soc-val" id="sc1">—</div>
+                <div class="soc-lbl" id="sc1Label">Top Scorer PPG</div>
+              </div>
+              <div class="stat-overview-card">
+                <div class="soc-icon">🎯</div>
+                <div class="soc-val" id="sc2">—</div>
+                <div class="soc-lbl" id="sc2Label">Top 3PT%</div>
+              </div>
+              <div class="stat-overview-card">
+                <div class="soc-icon">🤝</div>
+                <div class="soc-val" id="sc3">—</div>
+                <div class="soc-lbl" id="sc3Label">Top Assists</div>
+              </div>
+              <div class="stat-overview-card">
+                <div class="soc-icon">🛡</div>
+                <div class="soc-val" id="sc4">—</div>
+                <div class="soc-lbl" id="sc4Label">Top Blocks</div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+              <div class="chart-panel">
+                <div class="chart-panel-head">
+                  <div>
+                    <div class="chart-panel-title">Scoring Leaders</div>
+                    <div class="chart-panel-sub">Points per game — current season</div>
+                  </div>
+                </div>
+                <div id="scoringChart" class="chart-area"></div>
+              </div>
+              <div class="chart-panel">
+                <div class="chart-panel-head">
+                  <div>
+                    <div class="chart-panel-title">3-Point Leaders</div>
+                    <div class="chart-panel-sub">Three-point percentage leaders</div>
+                  </div>
+                </div>
+                <div id="threePtChart" class="chart-area"></div>
+              </div>
+            </div>
+
+            <!-- Heatmap -->
+            <div class="heatmap-panel">
+              <div class="heatmap-panel-head">
+                <div>
+                  <div class="chart-panel-title">Shot Heatmap</div>
+                  <div class="chart-panel-sub">Click a player to load their hot zones</div>
+                </div>
+                <select class="filter-select" id="heatmapPlayerSelect" onchange="renderHeatmap(this.value)" style="max-width:220px">
+                  <option value="">Select a player…</option>
+                </select>
+              </div>
+              <div class="heatmap-container" id="heatmapContainer">
+                <div class="heatmap-placeholder">
+                  <div class="hm-court-icon">🏀</div>
+                  <p>Select a player above to view their shot heatmap</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- end stats-lb-grid -->
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         HISTORY SECTION — VERTICAL TIMELINE
+    ══════════════════════════════════════════ -->
+    <div class="section-sep"></div>
+    <section id="history" class="section section-dark">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">NBA LEGACY</div>
+          <h2 class="section-title">League <span>History</span></h2>
+          <p class="section-sub">Seven decades of milestones, dynasties, and defining moments</p>
+        </div>
+
+        <!-- Vertical Timeline — fully static, rich content, no DB dependency -->
+        <div class="vtl-wrap">
+          <div class="vtl-spine"></div>
+
+          <!-- 1946 -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🏀</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1946</div>
+              <div class="vtl-cat">FOUNDING</div>
+              <h3 class="vtl-title">The NBA Is Born</h3>
+              <p class="vtl-desc">The Basketball Association of America (BAA) tips off with 11 franchises on November 1, 1946. Three years later it merges with the National Basketball League (NBL) to officially become the NBA — 17 founding teams, two coasts, one mission: make professional basketball matter.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">BAA Founding</span><span class="vtl-tag">17 Franchises</span></div>
+            </div>
+          </div>
+
+          <!-- 1954 -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>⏱</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1954</div>
+              <div class="vtl-cat">RULES</div>
+              <h3 class="vtl-title">The 24-Second Shot Clock</h3>
+              <p class="vtl-desc">Syracuse Nationals owner Danny Biasone introduces the 24-second shot clock after a 19–18 disaster of a game proved that stall-ball was killing the sport. The rule transforms basketball overnight — scoring averages jump 13 points per game in a single season, and the fast, continuous game we know today is born.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Rule Change</span><span class="vtl-tag">Danny Biasone</span></div>
+            </div>
+          </div>
+
+          <!-- 1960 -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>👑</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1960s</div>
+              <div class="vtl-cat">DYNASTY</div>
+              <h3 class="vtl-title">Bill Russell & the Celtic Dynasty</h3>
+              <p class="vtl-desc">Bill Russell anchors a Boston Celtics team that wins 11 championships in 13 seasons — the most dominant run in North American pro sports. Russell pioneers defensive basketball and wins five MVP awards, proving that protecting the paint and orchestrating team defense is as valuable as any scorer in the league.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">11 Championships</span><span class="vtl-tag">Bill Russell</span><span class="vtl-tag">Boston Celtics</span></div>
+            </div>
+          </div>
+
+          <!-- 1962 -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>💯</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1962</div>
+              <div class="vtl-cat">RECORD</div>
+              <h3 class="vtl-title">Wilt Chamberlain Scores 100</h3>
+              <p class="vtl-desc">On March 2, 1962 in Hershey, Pennsylvania, Wilt Chamberlain of the Philadelphia Warriors scores 100 points in a single game against the New York Knicks — a record so far beyond reach it may stand for eternity. No TV cameras, no full box score, just a handwritten note confirming what happened. He also averaged 50.4 PPG for the entire season.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Unbroken Record</span><span class="vtl-tag">Wilt Chamberlain</span></div>
+            </div>
+          </div>
+
+          <!-- 1979 -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>3️⃣</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1979</div>
+              <div class="vtl-cat">RULES</div>
+              <h3 class="vtl-title">The Three-Point Line Arrives</h3>
+              <p class="vtl-desc">Adopted from the ABA, the NBA introduces the three-point arc at the start of the 1979–80 season. Ridiculed as a gimmick by purists, it sits dormant for a decade — until Larry Bird and later Reggie Miller weaponize it. By the 2010s, Stephen Curry turns it into the most decisive shot in basketball history.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Rule Change</span><span class="vtl-tag">ABA Legacy</span></div>
+            </div>
+          </div>
+
+          <!-- 1984 -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🐐</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1984</div>
+              <div class="vtl-cat">DRAFT</div>
+              <h3 class="vtl-title">Michael Jordan Enters the League</h3>
+              <p class="vtl-desc">The Chicago Bulls select Michael Jordan 3rd overall — behind Hakeem Olajuwon and Sam Bowie. Jordan wins Rookie of the Year, six NBA championships, five MVPs, six Finals MVPs, and transforms basketball into a global phenomenon. The Nike Air Jordan deal he signs that year becomes the most valuable athlete endorsement in history.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Michael Jordan</span><span class="vtl-tag">Chicago Bulls</span><span class="vtl-tag">6× Champion</span></div>
+            </div>
+          </div>
+
+          <!-- 1984 Magic vs Bird -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🔥</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1980s</div>
+              <div class="vtl-cat">RIVALRY</div>
+              <h3 class="vtl-title">Magic vs. Bird — The Rivalry That Saved the NBA</h3>
+              <p class="vtl-desc">Magic Johnson and Larry Bird enter the NBA in the same 1979 draft class and immediately become the league's defining rivalry. The Celtics and Lakers meet in the Finals three times in the decade. Their dueling styles — Magic's Showtime fast breaks vs Bird's methodical precision — drive the NBA from near-bankruptcy in the late 1970s to a $1 billion juggernaut by 1990.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Magic Johnson</span><span class="vtl-tag">Larry Bird</span><span class="vtl-tag">Showtime Lakers</span></div>
+            </div>
+          </div>
+
+          <!-- 1992 -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🥇</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1992</div>
+              <div class="vtl-cat">GLOBAL</div>
+              <h3 class="vtl-title">The Dream Team — Basketball Goes Global</h3>
+              <p class="vtl-desc">For the first time, USA Basketball fields NBA professionals at the Barcelona Olympics. The 1992 Dream Team — Jordan, Magic, Bird, Barkley, Ewing, Pippen, Drexler, Malone, Stockton, Robinson, Mullin, and a college player named Christian Laettner — wins every game by an average of 44 points and exports the NBA to a billion new fans worldwide.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">1992 Olympics</span><span class="vtl-tag">Barcelona</span><span class="vtl-tag">Gold Medal</span></div>
+            </div>
+          </div>
+
+          <!-- 1998 -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🏆</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">1998</div>
+              <div class="vtl-cat">CHAMPIONSHIP</div>
+              <h3 class="vtl-title">Jordan's Last Shot — The Sixpeat</h3>
+              <p class="vtl-desc">Game 6 of the 1998 NBA Finals. Jordan steals the ball from Karl Malone, drives the length of the floor, and drains the series-winning jumper over Bryon Russell with 5.2 seconds left. The Bulls' sixth championship in eight years. Jordan retires for the second time, and the basketball world enters the post-Jordan era wondering what comes next.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">1998 Finals</span><span class="vtl-tag">Chicago Bulls</span><span class="vtl-tag">6th Title</span></div>
+            </div>
+          </div>
+
+          <!-- 2000 Shaq Kobe -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>⚡</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">2000–02</div>
+              <div class="vtl-cat">DYNASTY</div>
+              <h3 class="vtl-title">Shaq & Kobe's Three-Peat</h3>
+              <p class="vtl-desc">The Los Angeles Lakers win three consecutive championships behind Shaquille O'Neal's unstoppable interior dominance and Kobe Bryant's relentless competitive fire. Phil Jackson's triangle offense ties it together. O'Neal wins Finals MVP all three times and is at his peak — the most physically dominant player the game has ever seen.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Shaq O'Neal</span><span class="vtl-tag">Kobe Bryant</span><span class="vtl-tag">Lakers Dynasty</span></div>
+            </div>
+          </div>
+
+          <!-- 2016 LeBron Comeback -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>📿</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">2016</div>
+              <div class="vtl-cat">COMEBACK</div>
+              <h3 class="vtl-title">LeBron's Promised Land — The 3-1 Comeback</h3>
+              <p class="vtl-desc">Down 3–1 to the 73-win Golden State Warriors, LeBron James leads the Cleveland Cavaliers to three straight wins — including back-to-back road wins in Games 5 and 6. In Game 7, LeBron's chase-down block on Andre Iguodala with 1:50 left becomes one of the most replayed moments in Finals history. Cleveland breaks a 52-year championship drought.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">LeBron James</span><span class="vtl-tag">Cleveland Cavaliers</span><span class="vtl-tag">3-1 Down</span></div>
+            </div>
+          </div>
+
+          <!-- 2015-2019 Warriors -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🎯</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">2015–19</div>
+              <div class="vtl-cat">REVOLUTION</div>
+              <h3 class="vtl-title">Curry & the Three-Point Revolution</h3>
+              <p class="vtl-desc">Stephen Curry breaks the three-point record three times in four seasons, peaking at 402 in 2015–16 — the same year the Warriors finish 73–9, the best regular-season record in NBA history. The Warriors' four championships in eight Finals appearances force every team in the league to reconsider spacing, shooting, and the value of the long two-pointer.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Steph Curry</span><span class="vtl-tag">4× Champion</span><span class="vtl-tag">73-9 Season</span></div>
+            </div>
+          </div>
+
+          <!-- 2019 Kawhi -->
+          <div class="vtl-item vtl-left">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🌀</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">2019</div>
+              <div class="vtl-cat">MOMENT</div>
+              <h3 class="vtl-title">Kawhi's Bouncing Buzzer-Beater</h3>
+              <p class="vtl-desc">Game 7 of the second round. Toronto Raptors vs Philadelphia 76ers. With 0.9 seconds left and the score tied, Kawhi Leonard catches an inbound, turns, and heaves a corner four-bouncer that rolls around the rim and falls through. The only walk-off buzzer-beater in NBA Game 7 history. Toronto goes on to win their first championship.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Kawhi Leonard</span><span class="vtl-tag">Game 7</span><span class="vtl-tag">Toronto Raptors</span></div>
+            </div>
+          </div>
+
+          <!-- 2023 Jokic -->
+          <div class="vtl-item vtl-right">
+            <div class="vtl-connector"></div>
+            <div class="vtl-dot"><span>🧩</span></div>
+            <div class="vtl-card">
+              <div class="vtl-year-badge">2023</div>
+              <div class="vtl-cat">CHAMPIONSHIP</div>
+              <h3 class="vtl-title">Nikola Jokić & Denver's First Title</h3>
+              <p class="vtl-desc">Nikola Jokić wins his third MVP in four years then leads the Denver Nuggets to their first championship, sweeping Jamal Murray's buzzer-beating heroics into the postseason narrative. Jokić posts 30-14-7 in the Finals sweep-clinching game and is unanimously named Finals MVP — cementing his place as one of the most skilled offensive players the center position has ever produced.</p>
+              <div class="vtl-tag-row"><span class="vtl-tag">Nikola Jokić</span><span class="vtl-tag">Denver Nuggets</span><span class="vtl-tag">First Title</span></div>
+            </div>
+          </div>
+
+        </div><!-- end vtl-wrap -->
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         COURT MOMENTS — API-POWERED GALLERY
+    ══════════════════════════════════════════ -->
+    <section id="courtmoments" class="section moments-section">
+      <div class="section-inner">
+        <div class="section-head">
+          <div class="section-eyebrow">GALLERY</div>
+          <h2 class="section-title">Court <span>Moments</span></h2>
+          <p class="section-sub">The most iconic and memorable moments in NBA franchise history</p>
+        </div>
+
+        <!-- Carousel rendered by JS -->
+        <div id="momentsGrid"></div>
+
+      </div>
+    </section>
+</main>
+
+  <!-- FLOATING BOTTOM TICKER -->
+  <div class="bottom-ticker" id="bottomTicker">
+    <div class="bt-badge"><span class="bt-dot"></span>LIVE</div>
+    <div class="bt-scroll">
+      <div class="bt-track" id="tickerTrack">
+        <span class="bt-item">Connecting to live data…</span>
+      </div>
+    </div>
+    <div class="bt-time" id="tickerTime"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="imgs/courtstarslogo.png" alt="CourtStars"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+            <span class="footer-logo-text" style="display:none;">COURT<span>STARS</span></span>
+          </div>
+          <p>A premium immersive NBA analytics platform for real basketball fans.</p>
+        </div>
+        <div class="footer-links-grid">
+  <div class="footer-col">
+    <div class="footer-col-title">Explore</div>
+    <a href="#players" onclick="scrollToSection('players')">Players</a>
+    <a href="#teams" onclick="scrollToSection('teams')">Teams</a>
+    <a href="#leaderboards" onclick="scrollToSection('leaderboards')">Stats & Rankings</a>
+  </div>
+  <div class="footer-col">
+    <div class="footer-col-title">Discover</div>
+    <a href="#history" onclick="scrollToSection('history')">History</a>
+    <a href="#news" onclick="scrollToSection('news')">News</a>
+    <a href="#courtmoments" onclick="scrollToSection('courtmoments')">Court Moments</a>
+  </div>
+</div>      </div>
+      <div class="footer-bottom">
+        <span>© 2025 CourtStars · Data for educational & fan use · Powered by ESPN API + nba_api</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- PLAYER MODAL -->
+  <div class="modal-overlay" id="playerModalOverlay" onclick="closePlayerModal(event)">
+    <div class="modal player-modal" id="playerModal">
+      <div class="modal-hero" id="pmHero">
+        <div class="modal-hero-bg" id="pmBg"></div>
+        <button class="modal-close" onclick="closePlayerModalDirect()">✕</button>
+        <div class="modal-hero-content">
+          <div class="modal-jersey" id="pmJersey"></div>
+          <div class="modal-avatar-wrap">
+            <img class="modal-avatar" id="pmAvatar" src="" alt="" onerror="this.style.display='none';document.getElementById('pmAvatarPlaceholder').style.display='flex'" />
+            <div class="modal-avatar-placeholder" id="pmAvatarPlaceholder"></div>
+          </div>
+          <div class="modal-hero-info">
+            <div class="modal-player-name" id="pmName"></div>
+            <div class="modal-player-meta" id="pmMeta"></div>
+            <div class="modal-quick-stats" id="pmQuick"></div>
+          </div>
+        </div>
+        <div class="modal-hero-actions">
+          <button class="mha-btn" id="pmFavBtn" onclick="toggleFavoriteFromModal()">☆ Favorite</button>
+          <button class="mha-btn" id="pmCompareBtn" onclick="toggleCompareFromModal()">⚖ Compare</button>
+        </div>
+      </div>
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="switchPlayerTab('overview',this)">Overview</button>
+        <button class="modal-tab" onclick="switchPlayerTab('strengths',this)">Strengths</button>
+        <button class="modal-tab" onclick="switchPlayerTab('games',this)">Game Log</button>
+        <button class="modal-tab" onclick="switchPlayerTab('journey',this)">Bio</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-panel active" id="pm-overview"></div>
+        <div class="tab-panel" id="pm-strengths"></div>
+        <div class="tab-panel" id="pm-games"></div>
+        <div class="tab-panel" id="pm-journey"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM MODAL -->
+  <div class="modal-overlay" id="teamModalOverlay" onclick="closeTeamModal(event)">
+    <div class="modal team-modal" id="teamModal">
+      <div class="modal-hero" id="tmHero">
+        <div class="modal-hero-bg" id="tmBg"></div>
+        <button class="modal-close" onclick="closeTeamModalDirect()">✕</button>
+        <div class="modal-hero-content">
+          <div class="team-modal-logo" id="tmLogo"></div>
+          <div class="modal-hero-info">
+            <div class="modal-player-name" id="tmName"></div>
+            <div class="modal-player-meta" id="tmMeta"></div>
+            <div class="modal-quick-stats" id="tmQuick"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" id="tmBody"></div>
+    </div>
+  </div>
+
+  <!-- COMPARE MODAL -->
+  <div class="modal-overlay" id="compareModalOverlay" onclick="closeCompareModal(event)">
+    <div class="modal compare-modal" id="compareModal">
+      <div class="compare-header">
+        <h2>Player Comparison</h2>
+        <button class="modal-close" onclick="closeCompareModalDirect()">✕</button>
+      </div>
+      <div class="compare-body" id="compareBody"></div>
+    </div>
+  </div>
+
+  <!-- NEWS ARTICLE MODAL -->
+  <div class="modal-overlay" id="newsModalOverlay" onclick="closeNewsModal(event)">
+    <div class="modal news-modal" id="newsModal">
+      <button class="modal-close" onclick="closeNewsModalDirect()">✕</button>
+      <div class="news-modal-body" id="newsModalBody"></div>
+    </div>
+  </div>
+
+  <!-- COMPARE BAR -->
+  <div class="compare-bar" id="compareBar">
+    <div class="compare-slots" id="compareSlots"></div>
+    <div class="compare-actions">
+      <span class="compare-count" id="compareCount">0 / 2</span>
+      <button class="btn-compare-clear" onclick="clearCompare()">Clear</button>
+      <button class="btn-compare-go" id="compareGoBtn" onclick="openCompareModal()" disabled>Compare →</button>
+    </div>
+  </div>
+
+  <script src="function.js"></script>
+  <!-- AUTH GATE OVERLAY: shown when user tries a restricted action while logged out -->
+  <div id="authGateOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(10px);z-index:9800;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-xl);padding:40px 36px;max-width:400px;width:100%;text-align:center;animation:fadeIn 0.35s ease">
+      <img src="imgs/courtstarslogo.png" alt="CourtStars" style="height:48px;object-fit:contain;margin-bottom:16px" onerror="this.style.display='none'" />
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Sign In Required</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6">Create an account or sign in to save favorites, track players, and access your personalized stats.</p>
+      <div style="display:flex;gap:10px;flex-direction:column">
+        <a href="login.html" style="display:block;padding:13px;background:var(--orange);color:var(--white);border-radius:var(--radius);font-family:var(--font-display);font-size:14px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:var(--trans);">Sign In / Register</a>
+        <button onclick="document.getElementById('authGateOverlay').style.display='none'" style="padding:11px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--muted);font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

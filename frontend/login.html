@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourtStars — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="auth-wrapper">
+    <div class="auth-card">
+
+      <!-- Back Button -->
+      <button class="auth-back-btn" onclick="goBack()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Home
+      </button>
+
+      <!-- Logo -->
+      <a href="index.html" class="auth-logo">
+        <img src="imgs/courtstarslogo.png" alt="CourtStars Logo"
+             onerror="this.style.display='none';document.getElementById('authLogoFallback').style.display='inline'" />
+        <span id="authLogoFallback" style="display:none;">COURT<span>STARS</span></span>
+      </a>
+      <p class="auth-sub" id="authSubtext">Enter the Arena</p>
+
+      <!-- Tab Switcher (for non-logged-in state) -->
+      <div class="auth-tabs" id="authTabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- ── LOGIN FORM ────────────────────────────── -->
+      <form id="loginForm" class="auth-form active" onsubmit="handleLogin(event)">
+        <div class="auth-alert" id="loginAlert"></div>
+
+        <div class="auth-field">
+          <label for="loginEmail">Email or Username</label>
+          <input type="text" id="loginEmail" class="auth-input"
+                 placeholder="player@courtstars.com" required autocomplete="email" />
+        </div>
+
+        <div class="auth-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="auth-input"
+                 placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+
+        <div class="auth-row">
+          <label>
+            <input type="checkbox" id="loginRemember" />
+            Remember me
+          </label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="auth-btn" id="loginBtn">
+          <div class="btn-spinner"></div>
+          <span class="btn-text">
+            Sign In
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </button>
+      </form>
+
+      <!-- ── REGISTER FORM ─────────────────────────── -->
+      <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+        <div class="auth-alert" id="registerAlert"></div>
+
+        <div class="auth-field">
+          <label for="regUsername">Username</label>
+          <input type="text" id="regUsername" class="auth-input"
+                 placeholder="CourtKing23" required minlength="3" autocomplete="username" />
+          <span class="field-hint" id="hintUsername">At least 3 characters</span>
+        </div>
+
+        <div class="auth-field">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" class="auth-input"
+                 placeholder="player@courtstars.com" required autocomplete="email" />
+          <span class="field-hint" id="hintEmail">Enter a valid email</span>
+        </div>
+
+        <div class="auth-field">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" class="auth-input"
+                 placeholder="At least 6 characters" required minlength="6"
+                 autocomplete="new-password"
+                 oninput="updatePwStrength(this.value)" />
+          <div class="pw-strength"><div class="pw-strength-fill" id="pwFill"></div></div>
+          <div class="pw-strength-label" id="pwLabel"></div>
+        </div>
+
+        <div class="auth-field">
+          <label for="regConfirm">Confirm Password</label>
+          <input type="password" id="regConfirm" class="auth-input"
+                 placeholder="Repeat password" required autocomplete="new-password" />
+          <span class="field-hint" id="hintConfirm">Passwords do not match</span>
+        </div>
+
+        <button type="submit" class="auth-btn" id="registerBtn">
+          <div class="btn-spinner"></div>
+          <span class="btn-text">
+            Create Account
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </button>
+      </form>
+
+      <!-- ── PROFILE / ACCOUNT MANAGEMENT (when logged in) ─────── -->
+      <div id="profileSection" class="profile-section">
+        <div class="auth-alert" id="profileAlert"></div>
+
+        <div class="profile-header" id="profileHeader">
+          <div class="profile-avatar-lg" id="profileAvatarLg">?</div>
+          <div class="profile-info-text">
+            <strong id="profileUsername">—</strong>
+            <span id="profileEmail">—</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-action-row">
+          <button class="profile-btn" onclick="toggleUpdateForm()">✏️ Edit Profile</button>
+          <button class="profile-btn danger" onclick="toggleDeleteConfirm()">🗑 Delete Account</button>
+        </div>
+
+        <!-- Update Form -->
+        <div class="profile-update-form" id="profileUpdateForm">
+          <div style="font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;">Update Profile</div>
+
+          <div class="auth-field">
+            <label for="updateUsername">New Username</label>
+            <input type="text" id="updateUsername" class="auth-input" placeholder="New username (min 3 chars)" minlength="3" />
+          </div>
+
+          <div class="auth-field">
+            <label for="updateDisplayName">Display Name</label>
+            <input type="text" id="updateDisplayName" class="auth-input" placeholder="Display Name" />
+          </div>
+
+          <div class="auth-field">
+            <label for="updateEmail">New Email</label>
+            <input type="email" id="updateEmail" class="auth-input" placeholder="New email address" />
+          </div>
+
+          <div class="auth-field">
+            <label for="updatePassword">New Password</label>
+            <input type="password" id="updatePassword" class="auth-input" placeholder="Leave blank to keep current" minlength="6" />
+          </div>
+
+          <div class="auth-field">
+            <label for="updateCurrentPassword">Current Password <span style="color:var(--orange)">*</span></label>
+            <input type="password" id="updateCurrentPassword" class="auth-input" placeholder="Required to save changes" required />
+          </div>
+
+          <button type="button" class="auth-btn" id="updateBtn" onclick="handleUpdate()">
+            <div class="btn-spinner"></div>
+            <span class="btn-text">Save Changes</span>
+          </button>
+          <button type="button" class="profile-cancel-link" onclick="toggleUpdateForm()">Cancel</button>
+        </div>
+
+        <!-- Delete Confirm -->
+        <div class="profile-delete-confirm" id="profileDeleteConfirm">
+          <div class="delete-warning">
+            ⚠️ This action is permanent. Your account, profile, and all saved favorites will be deleted and cannot be recovered.
+          </div>
+          <div class="auth-field">
+            <label for="deletePassword">Enter Password to Confirm</label>
+            <input type="password" id="deletePassword" class="auth-input" placeholder="Your current password" />
+          </div>
+          <button type="button" class="auth-btn" id="deleteBtn" style="background:rgba(239,68,68,0.7);" onclick="handleDelete()">
+            <div class="btn-spinner"></div>
+            <span class="btn-text">Permanently Delete Account</span>
+          </button>
+          <button type="button" class="profile-cancel-link" onclick="toggleDeleteConfirm()">Cancel</button>
+        </div>
+
+        <div style="border-top:1px solid var(--border2);padding-top:16px;text-align:center;">
+          <button class="auth-btn" style="background:rgba(255,255,255,0.06);color:var(--muted);margin-top:0;" onclick="signOut()">
+            <span class="btn-text">Sign Out</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="auth-footer" id="authFooter">
+        <span id="authFooterText">
+          New here? <a href="#" onclick="switchTab('register');return false;">Create an account</a>
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const AUTH_BASE = new URL('../api/auth/', window.location.href).pathname;
+
+    // ── On load: check if user already logged in ────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      const stored = localStorage.getItem('cs_user');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          showProfileMode(user);
+        } catch(e) { showAuthMode(); }
+      } else {
+        showAuthMode();
+      }
+      if (window.location.hash === '#register') switchTab('register');
+    });
+
+    function showAuthMode() {
+      document.getElementById('authTabs').style.display = 'flex';
+      document.getElementById('loginForm').classList.add('active');
+      document.getElementById('profileSection').classList.remove('active');
+      document.getElementById('authFooter').style.display = 'block';
+      document.getElementById('authSubtext').textContent = 'Enter the Arena';
+    }
+
+    function showProfileMode(user) {
+      document.getElementById('authTabs').style.display = 'none';
+      document.getElementById('loginForm').classList.remove('active');
+      document.getElementById('registerForm').classList.remove('active');
+      document.getElementById('profileSection').classList.add('active');
+      document.getElementById('authFooter').style.display = 'none';
+      document.getElementById('authSubtext').textContent = 'Your Account';
+
+      const initial = (user.display_name || user.username || '?')[0].toUpperCase();
+      document.getElementById('profileAvatarLg').textContent = initial;
+      document.getElementById('profileUsername').textContent = user.display_name || user.username;
+      document.getElementById('profileEmail').textContent = user.email || '';
+
+      // Pre-fill update fields
+      document.getElementById('updateUsername').value = user.username || '';
+      document.getElementById('updateDisplayName').value = user.display_name || '';
+      document.getElementById('updateEmail').value = user.email || '';
+    }
+
+    // ── Tab Switching ────────────────────────────────────────────
+    function switchTab(tab) {
+      document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+      document.getElementById('registerForm').classList.toggle('active', tab === 'register');
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+      document.getElementById('authFooterText').innerHTML = tab === 'login'
+        ? `New here? <a href="#" onclick="switchTab('register');return false;">Create an account</a>`
+        : `Already have an account? <a href="#" onclick="switchTab('login');return false;">Sign in</a>`;
+      clearAlerts();
+    }
+
+    function clearAlerts() {
+      ['loginAlert','registerAlert','profileAlert'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.className = 'auth-alert'; el.textContent = ''; }
+      });
+    }
+
+    function showAlert(id, type, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.className = `auth-alert ${type} show`;
+      el.textContent = msg;
+    }
+
+    function setLoading(btn, loading) {
+      btn.disabled = loading;
+      btn.classList.toggle('loading', loading);
+    }
+
+    // ── Back Button ──────────────────────────────────────────────
+    function goBack() {
+      if (document.referrer && document.referrer !== window.location.href) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    // ── Password Strength ────────────────────────────────────────
+    function updatePwStrength(val) {
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+      const fill  = document.getElementById('pwFill');
+      const label = document.getElementById('pwLabel');
+      const pct   = (score / 5) * 100;
+      const colors = ['#ef4444','#f97316','#eab308','#22c55e','#16a34a'];
+      const labels = ['Very weak','Weak','Fair','Strong','Very strong'];
+      fill.style.width      = pct + '%';
+      fill.style.background = colors[score - 1] || '#ef4444';
+      label.textContent     = val.length ? (labels[score - 1] || '') : '';
+      label.style.color     = colors[score - 1] || 'var(--muted)';
+    }
+
+    // ── Login Handler ────────────────────────────────────────────
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn   = document.getElementById('loginBtn');
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass  = document.getElementById('loginPassword').value;
+      setLoading(btn, true);
+      clearAlerts();
+      try {
+        const res  = await fetch(AUTH_BASE + 'login.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password: pass }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('cs_user',  JSON.stringify(data.user));
+          localStorage.setItem('cs_token', data.token);
+          showAlert('loginAlert', 'success', data.message || 'Welcome back!');
+          const returnUrl = new URLSearchParams(window.location.search).get('return') || 'index.html';
+          setTimeout(() => { window.location.href = returnUrl; }, 900);
+        } else {
+          showAlert('loginAlert', 'error', data.error || 'Login failed. Check your credentials.');
+        }
+      } catch(err) {
+        showAlert('loginAlert', 'error', `Cannot reach server. Check your connection.`);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ── Register Handler ─────────────────────────────────────────
+    async function handleRegister(e) {
+      e.preventDefault();
+      const btn      = document.getElementById('registerBtn');
+      const username = document.getElementById('regUsername').value.trim();
+      const email    = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirm  = document.getElementById('regConfirm').value;
+      let valid = true;
+      if (username.length < 3) {
+        document.getElementById('regUsername').classList.add('error');
+        document.getElementById('hintUsername').classList.add('show');
+        valid = false;
+      }
+      if (password !== confirm) {
+        document.getElementById('regConfirm').classList.add('error');
+        document.getElementById('hintConfirm').classList.add('show');
+        valid = false;
+      }
+      if (!valid) return;
+      document.querySelectorAll('.auth-input').forEach(i => i.classList.remove('error'));
+      document.querySelectorAll('.field-hint').forEach(i => i.classList.remove('show'));
+      setLoading(btn, true);
+      clearAlerts();
+      try {
+        const res  = await fetch(AUTH_BASE + 'register.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ username, email, password }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('cs_user',  JSON.stringify(data.user));
+          localStorage.setItem('cs_token', data.token);
+          showAlert('registerAlert', 'success', data.message || 'Account created! Redirecting…');
+          const returnUrl = new URLSearchParams(window.location.search).get('return') || 'index.html';
+          setTimeout(() => { window.location.href = returnUrl; }, 1200);
+        } else {
+          const msg = data.errors ? data.errors.join(' ') : (data.error || 'Registration failed.');
+          showAlert('registerAlert', 'error', msg);
+        }
+      } catch(err) {
+        showAlert('registerAlert', 'error', `Cannot reach server. Check your connection.`);
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ── Profile: Toggle Update Form ──────────────────────────────
+    function toggleUpdateForm() {
+      const form = document.getElementById('profileUpdateForm');
+      const isShowing = form.classList.contains('show');
+      form.classList.toggle('show', !isShowing);
+      // Hide delete confirm if open
+      document.getElementById('profileDeleteConfirm').classList.remove('show');
+      clearAlerts();
+    }
+
+    function toggleDeleteConfirm() {
+      const form = document.getElementById('profileDeleteConfirm');
+      form.classList.toggle('show');
+      document.getElementById('profileUpdateForm').classList.remove('show');
+      clearAlerts();
+    }
+
+    // ── Profile: Update Handler ──────────────────────────────────
+    async function handleUpdate() {
+      const btn = document.getElementById('updateBtn');
+      const currentPassword = document.getElementById('updateCurrentPassword').value;
+      const newUsername     = document.getElementById('updateUsername').value.trim();
+      const newDisplayName  = document.getElementById('updateDisplayName').value.trim();
+      const newEmail        = document.getElementById('updateEmail').value.trim();
+      const newPassword     = document.getElementById('updatePassword').value;
+
+      if (!currentPassword) {
+        showAlert('profileAlert', 'error', 'Current password is required to save changes.');
+        return;
+      }
+
+      setLoading(btn, true);
+      clearAlerts();
+
+      try {
+        const token = localStorage.getItem('cs_token');
+        const res = await fetch(AUTH_BASE + 'update.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ current_password: currentPassword, username: newUsername, display_name: newDisplayName, email: newEmail, new_password: newPassword || undefined }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('cs_user', JSON.stringify(data.user));
+          showAlert('profileAlert', 'success', 'Profile updated successfully!');
+          showProfileMode(data.user);
+          toggleUpdateForm();
+        } else {
+          showAlert('profileAlert', 'error', data.error || 'Update failed.');
+        }
+      } catch(err) {
+        showAlert('profileAlert', 'error', 'Cannot reach server. Check your connection.');
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ── Profile: Delete Handler ──────────────────────────────────
+    async function handleDelete() {
+      const btn = document.getElementById('deleteBtn');
+      const password = document.getElementById('deletePassword').value;
+      if (!password) {
+        showAlert('profileAlert', 'error', 'Please enter your password to confirm deletion.');
+        return;
+      }
+      if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
+
+      setLoading(btn, true);
+      clearAlerts();
+
+      try {
+        const token = localStorage.getItem('cs_token');
+        const res = await fetch(AUTH_BASE + 'delete.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.removeItem('cs_user');
+          localStorage.removeItem('cs_token');
+          localStorage.removeItem('cs_favorites');
+          showAlert('profileAlert', 'success', 'Account deleted. Redirecting…');
+          setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+        } else {
+          showAlert('profileAlert', 'error', data.error || 'Deletion failed. Check your password.');
+        }
+      } catch(err) {
+        showAlert('profileAlert', 'error', 'Cannot reach server. Check your connection.');
+      } finally {
+        setLoading(btn, false);
+      }
+    }
+
+    // ── Sign Out ─────────────────────────────────────────────────
+    function signOut() {
+      localStorage.removeItem('cs_user');
+      localStorage.removeItem('cs_token');
+      showAuthMode();
+      switchTab('login');
+    }
+  </script>
+</body>
+</html>
