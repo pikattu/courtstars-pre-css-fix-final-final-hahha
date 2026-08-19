@@ -1,3 +1,11 @@
+
+
+https://github.com/user-attachments/assets/26c7d172-37ba-481f-a270-5b617fc045da
+
+
+
+
+
 # CourtStars
 
 CourtStars is a premium NBA analytics web app built with a static HTML/CSS/JavaScript frontend, PHP API endpoints, a MySQL database, and Python sync scripts for NBA stats data.
