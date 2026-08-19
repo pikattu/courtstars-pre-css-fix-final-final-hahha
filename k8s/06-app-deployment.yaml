@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: courtstars-app
+  namespace: courtstars
+  labels:
+    app: courtstars-app
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: courtstars-app
+  template:
+    metadata:
+      labels:
+        app: courtstars-app
+        version: "1.0.1"
+    spec:
+      containers:
+        - name: courtstars
+          image: courtstars:1.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: courtstars-config
+                  key: DB_HOST
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: courtstars-config
+                  key: DB_NAME
+            - name: STATS_STALE_HOURS
+              valueFrom:
+                configMapKeyRef:
+                  name: courtstars-config
+                  key: STATS_STALE_HOURS
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: courtstars-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: courtstars-secret
+                  key: DB_PASS
+          readinessProbe:
+            httpGet:
+              path: /courtstars/api/test.php
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /courtstars/api/test.php
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 750m
+              memory: 768Mi

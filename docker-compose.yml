@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: courtstars:1.0.1
+    container_name: courtstars-app
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: courtstars_db
+      DB_USER: root
+      DB_PASS: courtstars_root_password
+      STATS_STALE_HOURS: "6"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.4
+    container_name: courtstars-db
+    environment:
+      MYSQL_ROOT_PASSWORD: courtstars_root_password
+      MYSQL_DATABASE: courtstars_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - courtstars_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pcourtstars_root_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  courtstars_mysql:

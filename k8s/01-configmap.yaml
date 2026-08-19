@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: courtstars-config
+  namespace: courtstars
+data:
+  DB_HOST: courtstars-mysql
+  DB_NAME: courtstars_db
+  STATS_STALE_HOURS: "6"
