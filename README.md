@@ -8,313 +8,226 @@ https://github.com/user-attachments/assets/26c7d172-37ba-481f-a270-5b617fc045da
 
 # CourtStars
 
-CourtStars is a premium NBA analytics web app built with a static HTML/CSS/JavaScript frontend, PHP API endpoints, a MySQL database, and Python sync scripts for NBA stats data.
-
-The app gives users a basketball dashboard with player spotlights, team pages, leaderboards, charts, NBA news, game ticker data, history content, favorites, comparison tools, and a basketball learning page.
-
-## Features
-
-- Player directory with filters, search, stats, strengths, badges, and recent game logs
-- Team directory with conference/division details, logos, roster counts, and season stats
-- Leaderboards for points, rebounds, assists, steals, and blocks
-- Scoring and three-point charts rendered in the frontend
-- ESPN-powered news, scoreboard, schedule, and ticker endpoints
-- Player favorites saved in browser `localStorage`
-- Player comparison tools
-- Authentication API for register, login, logout, and current-user checks
-- Learn Basketball page for educational basketball content
-- Python scripts for syncing NBA teams, players, season stats, strengths, and game logs
-
-## Tech Stack
-
-- Frontend: HTML, CSS, vanilla JavaScript
-- Backend: PHP with PDO
-- Database: MySQL / MariaDB
-- Data sync: Python
-- External data:
-  - `nba_api` for NBA players, teams, stats, and game logs
-  - ESPN public endpoints for NBA news and scoreboard data
+CourtStars is an NBA web app for viewing players, teams, stats, leaderboards, game information, news, and basketball history. The project uses a PHP API, a MySQL database, and a static frontend served through Apache.
 
 ## Project Structure
 
 ```text
-courtstars_final/
-├── api/
-│   ├── auth.php
-│   ├── config.php
-│   ├── constants.php
-│   ├── db.php
-│   ├── get_charts.php
-│   ├── get_history.php
-│   ├── get_leaderboards.php
-│   ├── get_news.php
-│   ├── get_players.php
-│   ├── get_scoreboard.php
-│   ├── get_summary.php
-│   ├── get_teams.php
-│   └── get_ticker.php
-├── frontend/
-│   ├── index.html
-│   ├── main.html
-│   ├── learn.html
-│   ├── function.js
-│   ├── styles.css
-│   └── imgs/
-├── scripts/
-│   ├── sync_nba_stats.py
-│   └── sync_game_logs.py
-└── README.md
+courtstars/
+├── api/                 PHP API endpoints
+├── config/              Database and app constants
+├── database/            SQL migration files
+├── docker/              Apache configuration
+├── docs/                Deployment and project documentation
+├── frontend/            HTML, CSS, JavaScript, and image assets
+├── k8s/                 Kubernetes deployment files
+├── scripts/             Python scripts for NBA stat syncing
+├── Dockerfile           PHP/Apache container image
+└── docker-compose.yml   Local app + MySQL setup
 ```
 
 ## Requirements
 
-- XAMPP, MAMP, WAMP, or another Apache/PHP/MySQL environment
+For the recommended Docker setup:
+
+- Docker Desktop
+- Docker Compose
+
+For local XAMPP/manual setup:
+
+- XAMPP with Apache and MySQL
 - PHP 8+
-- MySQL or MariaDB
-- Python 3.10+
-- Python packages:
+- Python 3
+- Python packages: `requests`, `numpy`, and `nba_api`
+
+## Quick Start With Docker
+
+From the project root, run:
 
 ```bash
-pip install nba_api mysql-connector-python python-dotenv
+docker compose up --build
 ```
 
-## Local Setup With XAMPP
-
-1. Place this project inside your XAMPP `htdocs` folder.
+Wait for the app and database containers to start, then open:
 
 ```text
-/Applications/XAMPP/xamppfiles/htdocs/courtstars_final
+http://localhost:8080/courtstars/frontend/index.html
 ```
+
+Useful pages:
+
+```text
+Home:  http://localhost:8080/courtstars/frontend/index.html
+Login: http://localhost:8080/courtstars/frontend/login.html
+Learn: http://localhost:8080/courtstars/frontend/learn.html
+```
+
+Useful API checks:
+
+```bash
+curl http://localhost:8080/courtstars/api/test.php
+curl http://localhost:8080/courtstars/api/get_summary.php
+```
+
+The MySQL database runs inside Docker on port `3307` on your machine. The app container connects to it using the settings in `docker-compose.yml`.
+
+## Loading NBA Data
+
+CourtStars can sync NBA teams, rosters, player stats, leaderboards, and games from public ESPN endpoints and the Python `nba_api` package.
+
+To manually trigger a sync after Docker is running, open:
+
+```text
+http://localhost:8080/courtstars/api/sync_stats.php
+```
+
+Or run:
+
+```bash
+curl http://localhost:8080/courtstars/api/sync_stats.php
+```
+
+The app also tries to auto-sync when player data is missing or stale.
+
+## Run With XAMPP
+
+1. Place this project folder inside your XAMPP `htdocs` directory.
+
+   Example on macOS:
+
+   ```text
+   /Applications/XAMPP/xamppfiles/htdocs/courtstars
+   ```
 
 2. Start Apache and MySQL from the XAMPP control panel.
 
-3. Create a MySQL database.
+3. Create a MySQL database named:
 
-The default project config uses:
+   ```text
+   courtstars_db
+   ```
 
-```text
-Database: courtstars_schema
-User: root
-Password: empty string
-Host: localhost
-```
+4. Confirm the local database settings in `config/constants.php`.
 
-4. Update database credentials if needed.
+   Default local values are:
 
-Edit `api/config.php`:
+   ```text
+   DB_HOST = 127.0.0.1
+   DB_NAME = courtstars_db
+   DB_USER = root
+   DB_PASS = empty password
+   ```
 
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'courtstars_schema');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-```
+5. Install the Python dependency used for live NBA stats:
 
-Also update the matching `DB_CONFIG` values in:
+   ```bash
+   pip install nba_api requests numpy
+   ```
 
-```text
-scripts/sync_nba_stats.py
-scripts/sync_game_logs.py
-```
+6. Open the app:
 
-5. Import or create the database schema.
+   ```text
+   http://localhost/courtstars/frontend/index.html
+   ```
 
-The PHP endpoints expect tables such as:
+7. Optional: run the data sync:
 
-```text
-teams
-players
-seasons
-player_season_stats
-team_season_stats
-player_strengths
-player_badges
-player_game_log
-history_events
-api_cache
-users
-user_sessions
-```
+   ```text
+   http://localhost/courtstars/api/sync_stats.php
+   ```
 
-If you have a SQL dump for the project, import it into `courtstars_schema` through phpMyAdmin or the MySQL CLI before running the app.
+## Database Notes
 
-6. Open the app in your browser.
-
-```text
-http://localhost/courtstars_final/frontend/main.html
-```
-
-The sign-in page is available at:
-
-```text
-http://localhost/courtstars_final/frontend/index.html
-```
-
-The learning page is available at:
-
-```text
-http://localhost/courtstars_final/frontend/learn.html
-```
-
-## Sync NBA Data
-
-Run the main stats sync first:
+The PHP database connection automatically creates the main tables when the app connects. If you need to apply the v2 migration manually, use:
 
 ```bash
-python3 scripts/sync_nba_stats.py
+mysql -u root courtstars_db < database/migrate_v2.sql
 ```
 
-Optional full sync:
+Warning: `database/migrate_v2.sql` clears existing `player_stats` and `leaderboards` rows so fresh live data can be loaded.
+
+## Docker Commands
+
+Start or rebuild the app:
 
 ```bash
-python3 scripts/sync_nba_stats.py --full
+docker compose up --build
 ```
 
-Teams and rosters only:
+Run in the background:
 
 ```bash
-python3 scripts/sync_nba_stats.py --teams-only
+docker compose up -d --build
 ```
 
-Then sync recent game logs:
+Stop containers:
 
 ```bash
-python3 scripts/sync_game_logs.py
+docker compose down
 ```
 
-Useful faster sync for development:
+Stop containers and delete the local MySQL volume:
 
 ```bash
-python3 scripts/sync_game_logs.py --top 50 --games 15
+docker compose down -v
 ```
 
-The first sync can take a while because NBA stats endpoints are rate-limited.
+## Kubernetes
 
-## API Endpoints
+Kubernetes manifests are included in `k8s/`. For a local Minikube-style deployment:
 
-Use these endpoints to test the backend:
+```bash
+docker build -t courtstars:1.0.1 .
+minikube image load courtstars:1.0.1
+kubectl apply -f k8s/
+kubectl get pods -n courtstars
+```
+
+Open with port-forwarding:
+
+```bash
+kubectl port-forward -n courtstars service/courtstars-app 8080:80
+```
+
+Then visit:
 
 ```text
-GET /courtstars_final/api/get_summary.php
-GET /courtstars_final/api/get_players.php
-GET /courtstars_final/api/get_players.php?search=LeBron
-GET /courtstars_final/api/get_players.php?position=PG
-GET /courtstars_final/api/get_teams.php
-GET /courtstars_final/api/get_leaderboards.php?category=points&limit=10
-GET /courtstars_final/api/get_charts.php
-GET /courtstars_final/api/get_history.php
-GET /courtstars_final/api/get_news.php?limit=6
-GET /courtstars_final/api/get_scoreboard.php
-GET /courtstars_final/api/get_ticker.php
+http://localhost:8080/courtstars/frontend/index.html
 ```
 
-Authentication endpoints:
-
-```text
-POST /courtstars_final/api/auth.php?action=register
-POST /courtstars_final/api/auth.php?action=login
-POST /courtstars_final/api/auth.php?action=logout
-GET  /courtstars_final/api/auth.php?action=me
-```
-
-Successful endpoints return JSON in this general shape:
-
-```json
-{
-  "success": true,
-  "data": []
-}
-```
-
-Errors return:
-
-```json
-{
-  "success": false,
-  "error": "Error message"
-}
-```
-
-## How Data Flows
-
-```text
-nba_api
-  -> scripts/sync_nba_stats.py
-  -> teams, players, seasons, player_season_stats, team_season_stats, strengths
-
-nba_api
-  -> scripts/sync_game_logs.py
-  -> player_game_log
-
-ESPN public API
-  -> PHP news, scoreboard, ticker endpoints
-  -> api_cache
-
-PHP API
-  -> JSON responses
-  -> frontend/function.js
-  -> rendered dashboard UI
-```
-
-## Scheduling Daily Syncs
-
-On a server, you can schedule updates with cron:
-
-```cron
-0 6 * * * /usr/bin/python3 /path/to/courtstars_final/scripts/sync_nba_stats.py >> /tmp/courtstars_stats.log 2>&1
-30 6 * * * /usr/bin/python3 /path/to/courtstars_final/scripts/sync_game_logs.py --top 50 >> /tmp/courtstars_games.log 2>&1
-```
-
-For XAMPP on macOS, adjust the Python path and project path to match your machine.
-
-## Frontend Notes
-
-- `frontend/main.html` is the main dashboard.
-- `frontend/function.js` handles API calls, global state, rendering, filtering, searching, favorites, charts, modals, and UI interactions.
-- `frontend/styles.css` contains the main visual design.
-- `frontend/index.html` is the sign-in/register page.
-- `frontend/learn.html` is the basketball learning page.
-- Image assets live in `frontend/imgs/`.
+More deployment details are available in `docs/deployment-walkthrough.md`.
 
 ## Troubleshooting
 
-### The page loads but stats are empty
+If the page loads but data is missing:
 
-Make sure MySQL is running, `api/config.php` has the right credentials, the database tables exist, and the Python sync scripts have been run.
+- Make sure MySQL is running.
+- Open `/courtstars/api/test.php` to confirm PHP is working.
+- Open `/courtstars/api/sync_stats.php` to trigger a fresh data sync.
+- Check that Python and `nba_api` are installed if running without Docker.
 
-### API returns a database connection error
+If Docker cannot use port `8080`, edit the app port in `docker-compose.yml`:
 
-Check:
-
-- XAMPP MySQL is started
-- `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS` are correct
-- the database exists
-- PHP PDO MySQL support is enabled
-
-### Player or team images do not load
-
-Some images are loaded from external NBA or ESPN CDN URLs. Check your internet connection and browser console for blocked requests.
-
-### News or scoreboard data is missing
-
-The news, scoreboard, and ticker endpoints depend on ESPN public API responses. If ESPN is unavailable or rate-limited, those sections may temporarily show fallback UI.
-
-### Python sync fails
-
-Confirm dependencies are installed:
-
-```bash
-pip install nba_api mysql-connector-python python-dotenv
+```yaml
+ports:
+  - "8081:80"
 ```
 
-Also confirm the database credentials inside both Python scripts match your MySQL setup.
+Then open:
 
-## Development Tips
+```text
+http://localhost:8081/courtstars/frontend/index.html
+```
 
-- Keep API responses consistent: `{ "success": true, "data": ... }` for success and `{ "success": false, "error": ... }` for failure.
-- After changing table names or columns, update the PHP endpoints and Python sync scripts together.
-- Use browser DevTools to inspect failed API requests from `frontend/function.js`.
-- Avoid committing real production credentials in `api/config.php` or the Python scripts.
+## Main Technologies
+
+- PHP 8.2
+- Apache
+- MySQL 8.4
+- JavaScript, HTML, and CSS
+- Python `nba_api`
+- Docker and Docker Compose
+- Kubernetes manifests for container deployment
 
 ## License
 
